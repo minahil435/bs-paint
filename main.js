@@ -16,7 +16,9 @@
  * is the first argument to `repeat`, currently set at 10.
  */
 const gridWidth = 10;
+let isMouseDown = false;
 let count = 0;
+let color_selected = 'color-2'
 while (count <= gridWidth * gridWidth) {
   const canvas = document.querySelector('.canvas');
   const div = document.createElement('div');
@@ -45,6 +47,56 @@ while (count <= gridWidth * gridWidth) {
 /***********
  * QUERIES *
 ***********/
+
+
+const brush = document.querySelector('.current-brush');
+const paletteArray = document.querySelectorAll('.palette-color');
+const gridSquare = document.querySelectorAll('.square');
+
+for (const each of paletteArray) {
+  each.addEventListener('click', function (event) {
+    const elementThatWasClicked = event.target;
+    palettePressed((elementThatWasClicked.className).split(" ")[1])
+  });
+}
+
+// for (const each of gridSquare){
+//   each.addEventListener('click', function (event) {
+//     const elementThatWasClicked = event.target;
+//     gridPressed(elementThatWasClicked)
+//   });
+//   }
+
+
+
+
+for (const each of gridSquare) {
+  each.addEventListener('mousedown', e => {
+    isMouseDown = true;
+  });
+  each.addEventListener('mousemove', e => {
+    if (isMouseDown === true) {
+      const elementThatWasClicked = e.target;
+      gridPressed(elementThatWasClicked)
+    }
+  });
+
+  each.addEventListener('mouseup', e => {
+    if (isMouseDown === true) {
+      isMouseDown = false;
+    }
+  });
+
+  function palettePressed(color) {
+    color_selected = color
+    brush.className = "current-brush " + color;
+  }
+
+  function gridPressed(element) {
+    element.className = 'square ' + color_selected;
+  }
+
+}
 
 // Add queries for all your squares, palette colors, and brush here.
 // (Note the singular or plural used in that sentence!)
